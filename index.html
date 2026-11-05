@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#4f46e5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="description" content="O'zbek alifbosini bolalar va yangi boshlovchilar uchun o'yinlar orqali 0 dan o'rgatuvchi zamonaviy mobil web ilova">
+  <meta property="og:title" content="Alifbe.uz - O'zbek Alifbosi O'yinlar Bilan">
+  <meta property="og:description" content="Interaktiv o'yinlar, ovozli talaffuz va sehrli qalam orqali o'zbek alifbosini mukammal o'rganing!">
+  <title>Alifbe.uz - O'zbek Alifbosi O'yinlar Bilan</title>
+  
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
+</head>
+<body>
+
+  <!-- Asosiy mobil konteyner -->
+  <div class="app-container">
+
+    <!-- Yuqori panel (Header) -->
+    <header class="app-header">
+      <div class="header-top">
+        <div class="app-brand">
+          <span class="brand-icon">🌟</span>
+          <span class="brand-title">Alifbe.uz</span>
+        </div>
+        <div class="header-actions">
+          <button id="soundToggleBtn" class="icon-btn" title="Ovozni yoqish/o'chirish" aria-label="Ovoz sozlamasi">
+            🔊
+          </button>
+          <button id="themeToggleBtn" class="icon-btn" title="Mavzuni o'zgartirish" aria-label="Tun/Kun rejimi">
+            🌙
+          </button>
+        </div>
+      </div>
+
+      <!-- Statistika paneli -->
+      <div class="header-stats">
+        <div class="stat-item">
+          <span>Yulduzlar:</span>
+          <div class="stat-badge">
+            <span>⭐️</span>
+            <span id="headerStarsCount">0</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <span>Daraja:</span>
+          <div class="level-badge" id="headerLevelTitle">
+            🌱 Boshlovchi
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ======================================================================
+         1-BO'LIM: ALIFBO BOG'I (Interactive Alphabet Explorer)
+         ====================================================================== -->
+    <main id="tabAlifbo" class="tab-content active">
+      <!-- Qiziqarli kirish kartasi -->
+      <section class="hero-card">
+        <h1 class="hero-title">O'zbek Alifbosi 🚀</h1>
+        <p class="hero-subtitle">Har bir harf ustiga bosing, tinglang va so'zlarni kashf eting!</p>
+        
+        <div class="progress-track">
+          <div id="alphabetProgressBar" class="progress-fill"></div>
+        </div>
+        <div class="progress-labels">
+          <span id="learnedCountText">O'rganildi: 0 / 29</span>
+          <span>Marragacha olg'a! 🎯</span>
+        </div>
+      </section>
+
+      <!-- Harflarni toifalar bo'yicha saralash chiplari -->
+      <nav class="filter-scroll" aria-label="Harf turlari">
+        <button class="chip active" data-filter="all">Hammasi (29)</button>
+        <button class="chip" data-filter="unli">🔴 Unlilar (6)</button>
+        <button class="chip" data-filter="undosh">🔵 Undoshlar (23)</button>
+        <button class="chip" data-filter="special">✨ O'ziga xos (5)</button>
+      </nav>
+
+      <!-- 29 ta harf katakchalari -->
+      <section id="alphabetGrid" class="alphabet-grid" aria-label="Harflar ro'yxati">
+        <!-- JavaScript orqali dinamik yuklanadi -->
+      </section>
+    </main>
+
+    <!-- ======================================================================
+         2-BO'LIM: O'YINLAR MAYDONCHASI (Games Hub)
+         ====================================================================== -->
+    <section id="tabOyinlar" class="tab-content">
+      <!-- O'yin turini tanlash tugmalari -->
+      <div class="games-hub-menu">
+        <button class="game-tab-btn active" data-game="quiz">
+          <span class="game-tab-icon">🎯</span>
+          <span class="game-tab-title">Harfni Top</span>
+        </button>
+        <button class="game-tab-btn" data-game="memory">
+          <span class="game-tab-icon">🧩</span>
+          <span class="game-tab-title">Juftini Top</span>
+        </button>
+        <button class="game-tab-btn" data-game="words">
+          <span class="game-tab-icon">🔤</span>
+          <span class="game-tab-title">So'z Terish</span>
+        </button>
+      </div>
+
+      <!-- 1-O'YIN: VIKTORINA (QUIZ) -->
+      <div id="gameQuizView" class="game-card-view active">
+        <div class="game-top-bar">
+          <div class="game-score-badge">
+            <span>⭐️ Ball:</span>
+            <span id="quizScore">0</span>
+          </div>
+          <div class="streak-indicator">
+            <span>Ketma-ket:</span>
+            <span id="quizStreak">🔥 0</span>
+          </div>
+        </div>
+
+        <div class="quiz-question-box">
+          <div id="quizPromptText" class="quiz-prompt">Qaysi biri to'g'ri harf?</div>
+          <div id="quizClueVisual" class="quiz-clue-visual" title="Qayta tinglash uchun bosing">🍎</div>
+          <button id="quizAudioHintBtn" class="btn-secondary" style="margin: 0 auto; padding: 6px 14px; font-size: 0.82rem;">
+            🔊 Tovushni tinglash
+          </button>
+        </div>
+
+        <div id="quizOptionsGrid" class="quiz-options-grid">
+          <!-- 4 ta variant tugmasi JavaScript orqali qo'yiladi -->
+        </div>
+      </div>
+
+      <!-- 2-O'YIN: JUFTINI TOP (MEMORY MATCH) -->
+      <div id="gameMemoryView" class="game-card-view">
+        <div class="game-top-bar">
+          <div class="game-score-badge">
+            <span>Harakatlar:</span>
+            <span id="memoryMoves">0</span>
+          </div>
+          <div class="streak-indicator" style="color: var(--primary);">
+            <span>Topildi:</span>
+            <span id="memoryMatches">0 / 6 juft</span>
+          </div>
+        </div>
+
+        <p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-bottom: 8px;">
+          Harf va unga mos rasmli juftliklarni toping!
+        </p>
+
+        <div id="memoryGrid" class="memory-grid">
+          <!-- 12 ta karta dinamik yaratiladi -->
+        </div>
+
+        <button id="restartMemoryBtn" class="btn-secondary" style="width: 100%; margin-top: 14px;">
+          🔄 Yangi o'yin boshlash
+        </button>
+      </div>
+
+      <!-- 3-O'YIN: SO'Z TERISH (WORD BUILDER) -->
+      <div id="gameWordsView" class="game-card-view">
+        <div class="game-top-bar">
+          <div class="game-score-badge">
+            <span>⭐️ Yig'ilgan:</span>
+            <span id="wordsSolvedCount">0 ta so'z</span>
+          </div>
+          <button id="skipWordBtn" class="icon-btn" title="Keyingi so'zga o'tish" style="width: auto; padding: 0 10px; font-size: 0.8rem; border-radius: 8px;">
+            Keyingisi ⏩
+          </button>
+        </div>
+
+        <div id="wordBuilderVisual" class="word-builder-visual">🐟</div>
+        <div id="wordTargetHint" class="word-target-title">Baliq</div>
+
+        <!-- Yig'ilayotgan bo'sh joylar -->
+        <div id="wordSlotsContainer" class="word-slots-container">
+          <!-- Kataklar -->
+        </div>
+
+        <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-bottom: 12px;">
+          Harflarni ketma-ket bosing:
+        </p>
+
+        <!-- Aralashtirilgan harflar qatori -->
+        <div id="wordLettersPool" class="word-letters-pool">
+          <!-- Harf tugmalari -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         3-BO'LIM: SEHRLI QALAM (Harf Chizish va Mashq)
+         ====================================================================== -->
+    <section id="tabQalam" class="tab-content">
+      <div class="hero-card" style="background: var(--secondary-gradient); margin-bottom: 12px;">
+        <h2 class="hero-title" style="font-size: 1.15rem;">Sehrli Qalam ✍️</h2>
+        <p class="hero-subtitle">Barmoq bilan harf chiziqlari ustidan yozing va husnixatni o'rganing!</p>
+      </div>
+
+      <!-- Harflar karuseli -->
+      <div id="quickLetterScroll" class="quick-letter-scroll" aria-label="Chizish uchun harf tanlash">
+        <!-- Harflar tugmalari -->
+      </div>
+
+      <!-- Canvas chizish maydoni -->
+      <div class="canvas-wrapper">
+        <div class="canvas-header-bar">
+          <div class="canvas-letter-selector">
+            <span>Tanlangan:</span>
+            <span id="currentCanvasLetterDisplay" style="font-size: 1.3rem;">Aa</span>
+          </div>
+          <button id="speakCanvasLetterBtn" class="icon-btn" title="Harfni talaffuz qilish">
+            🔊
+          </button>
+        </div>
+
+        <canvas id="tracingCanvas"></canvas>
+
+        <div class="canvas-toolbar">
+          <div class="color-palette">
+            <button class="color-swatch active" style="background: #4f46e5;" data-color="#4f46e5" aria-label="Ko'k rang"></button>
+            <button class="color-swatch" style="background: #ec4899;" data-color="#ec4899" aria-label="Pushti rang"></button>
+            <button class="color-swatch" style="background: #10b981;" data-color="#10b981" aria-label="Yashil rang"></button>
+            <button class="color-swatch" style="background: #f59e0b;" data-color="#f59e0b" aria-label="Sariq rang"></button>
+          </div>
+
+          <div class="canvas-controls">
+            <button id="clearCanvasBtn" class="canvas-btn">
+              🗑️ Tozalash
+            </button>
+            <button id="checkCanvasBtn" class="canvas-btn done-btn">
+              🎉 Ofarin!
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         4-BO'LIM: YUTUQLAR VA STATISTIKA (Achievements)
+         ====================================================================== -->
+    <section id="tabYutuqlar" class="tab-content">
+      <div class="profile-card">
+        <div class="profile-avatar">🥇</div>
+        <h2 id="profileRankTitle" class="profile-name">Alifbo Qahramoni</h2>
+        <div id="profileLevelText" class="profile-level-desc">2-Daraja: Zukko Bilimdon</div>
+
+        <div class="stats-grid-2x2">
+          <div class="stat-box">
+            <div id="statTotalStars" class="stat-box-val">0</div>
+            <div class="stat-box-label">Jami Yulduzlar</div>
+          </div>
+          <div class="stat-box">
+            <div id="statLettersExplored" class="stat-box-val">0 / 29</div>
+            <div class="stat-box-label">Harflar O'rganildi</div>
+          </div>
+          <div class="stat-box">
+            <div id="statQuizHighscore" class="stat-box-val">0</div>
+            <div class="stat-box-label">Viktorina Balli</div>
+          </div>
+          <div class="stat-box">
+            <div id="statWordsMastered" class="stat-box-val">0</div>
+            <div class="stat-box-label">Terilgan So'zlar</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="badges-title">
+        <span>🏆 Nishonlar va Mukofotlar</span>
+      </div>
+
+      <div id="badgesContainer" class="badges-grid">
+        <!-- Nishonlar dinamik yaratiladi -->
+      </div>
+
+      <button id="resetProgressBtn" class="btn-secondary" style="width: 100%; margin-top: 20px; color: var(--danger); border-color: rgba(239, 68, 68, 0.3);">
+        ⚠️ Natijalarni qayta boshlash
+      </button>
+    </section>
+
+    <!-- ======================================================================
+         PASTKI NAVIGATSIYA PANELI (Bottom Bar)
+         ====================================================================== -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-tab="tabAlifbo">
+        <span class="nav-icon">📖</span>
+        <span class="nav-label">Alifbo</span>
+      </button>
+      <button class="nav-item" data-tab="tabOyinlar">
+        <span class="nav-icon">🎮</span>
+        <span class="nav-label">O'yinlar</span>
+      </button>
+      <button class="nav-item" data-tab="tabQalam">
+        <span class="nav-icon">✍️</span>
+        <span class="nav-label">Qalam</span>
+      </button>
+      <button class="nav-item" data-tab="tabYutuqlar">
+        <span class="nav-icon">🏆</span>
+        <span class="nav-label">Yutuqlar</span>
+      </button>
+    </nav>
+
+  </div> <!-- app-container tugashi -->
+
+  <!-- ======================================================================
+       HARF TAFSILOTLARI MODAL OYNASI (Letter Bottom Sheet)
+       ====================================================================== -->
+  <div id="letterModalOverlay" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-sheet">
+      <div class="sheet-handle"></div>
+
+      <div class="modal-header-row">
+        <div id="modalTypeTag" class="letter-type-tag">Unli tovush</div>
+        <button id="modalCloseBtn" class="modal-close-btn" aria-label="Yopish">✕</button>
+      </div>
+
+      <div class="modal-hero">
+        <div id="modalLetterPair" class="modal-letter-pair">Aa</div>
+        <div id="modalEmojiBanner" class="modal-emoji-banner">🍎</div>
+        <div id="modalWordMain" class="modal-word-main">Olma</div>
+      </div>
+
+      <div id="modalDescBox" class="modal-desc-box">
+        Unli tovush. Qalin va ochiq talaffuz qilinadi.
+      </div>
+
+      <div class="modal-examples-title">Qo'shimcha so'zlar:</div>
+      <div id="modalExamplesGrid" class="modal-examples-grid">
+        <!-- Misol so'zlar -->
+      </div>
+
+      <div class="modal-actions">
+        <button id="modalSpeakBtn" class="btn-primary">
+          <span>🔊</span> Tinglash
+        </button>
+        <button id="modalTraceBtn" class="btn-secondary">
+          <span>✍️</span> Yozib ko'rish
+        </button>
+      </div>
+
+      <div class="modal-nav-row">
+        <button id="modalPrevBtn" class="modal-nav-btn">⬅️ Oldingi</button>
+        <button id="modalNextBtn" class="modal-nav-btn">Keyingi ➡️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Konfetti va Bayram Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Kichik bildirishnoma (Toast) -->
+  <div id="toastMsg" class="toast-msg">
+    <span id="toastIcon">✨</span>
+    <span id="toastText">Ajoyib!</span>
+  </div>
+
+  <!-- Ssenariylar -->
+  <script src="alphabet-data.js"></script>
+  <script src="audio.js"></script>
+  <script src="speech.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
